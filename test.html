@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Group Assignment</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.card{
+    border:1px solid #ddd;
+    border-radius:10px;
+    padding:20px;
+    margin-top:20px;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    font-size:18px;
+    box-sizing:border-box;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    font-size:18px;
+    cursor:pointer;
+}
+
+.hidden{
+    display:none;
+}
+
+.loading{
+    text-align:center;
+    margin-top:50px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Group Assignment</h1>
+
+<div id="processing" class="loading">
+    <h2>Please wait...</h2>
+    <p>Group assignments are being updated.</p>
+    <p>This page will refresh automatically.</p>
+</div>
+
+<div id="searchArea" class="hidden">
+
+    <p>Enter your participant ID</p>
+
+    <input
+        id="participantId"
+        type="number"
+        placeholder="e.g. 42"
+    >
+
+    <button onclick="searchParticipant()">
+        Search
+    </button>
+
+    <div id="result"></div>
+
+</div>
+
+<script>
+
+let assignmentData = null;
+
+async function loadData(){
+
+    try{
+
+        const response = await fetch(
+            "assignments.json?t=" + Date.now()
+        );
+
+        const data = await response.json();
+
+        if(data.status === "processing"){
+
+            document.getElementById("processing")
+                .classList.remove("hidden");
+
+            document.getElementById("searchArea")
+                .classList.add("hidden");
+
+            setTimeout(loadData,10000);
+
+            return;
+        }
+
+        assignmentData = data;
+
+        document.getElementById("processing")
+            .classList.add("hidden");
+
+        document.getElementById("searchArea")
+            .classList.remove("hidden");
+
+    }
+    catch(err){
+
+        console.error(err);
+
+        setTimeout(loadData,10000);
+
+    }
+
+}
+
+function searchParticipant(){
+
+    const id =
+        document.getElementById("participantId")
+        .value
+        .trim();
+
+    const resultDiv =
+        document.getElementById("result");
+
+    const participant =
+        assignmentData.participants[id];
+
+    if(!participant){
+
+        resultDiv.innerHTML = `
+        <div class="card">
+            <h3>ID not found</h3>
+            <p>Please check your ID.</p>
+        </div>
+        `;
+
+        return;
+    }
+
+    resultDiv.innerHTML = `
+        <div class="card">
+
+            <h2>Your Assignment</h2>
+
+            <p><strong>Room</strong><br>
+            ${participant.room}</p>
+
+            <p><strong>Group</strong><br>
+            ${participant.group}</p>
+
+            <p><strong>Work with</strong><br>
+            ${participant.team.join(", ")}</p>
+
+        </div>
+    `;
+}
+
+loadData();
+
+</script>
+
+</body>
+</html>
