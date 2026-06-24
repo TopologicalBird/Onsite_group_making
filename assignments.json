@@ -1,3 +1,68 @@
 {
-  "status": "processing",
+  "status": "completed",
+  "participants": {
+    "1": {
+      "group": "R1",
+      "team": [
+        2,
+        29
+      ]
+    },
+    "2": {
+      "group": "R1",
+      "team": [
+        1,
+        29
+      ]
+    },
+    "29": {
+      "group": "R1",
+      "team": [
+        1,
+        2
+      ]
+    },
+    "30": {
+      "group": "R2",
+      "team": [
+        186,
+        187
+      ]
+    },
+    "186": {
+      "group": "R2",
+      "team": [
+        30,
+        187
+      ]
+    },
+    "187": {
+      "group": "R2",
+      "team": [
+        30,
+        186
+      ]
+    },
+    "9": {
+      "group": "Chem3",
+      "team": [
+        10,
+        11
+      ]
+    },
+    "10": {
+      "group": "Chem3",
+      "team": [
+        9,
+        11
+      ]
+    },
+    "11": {
+      "group": "Chem3",
+      "team": [
+        9,
+        10
+      ]
+    }
+  }
 }
